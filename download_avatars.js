@@ -37,9 +37,6 @@ if(!repoOwner || !repoName) {
   process.exit(1)
 } else {
     getRepoContributors(repoOwner, repoName, function(err, result) {
-        //console.log("Errors:", err);
-        //console.log("Result:", result);   
-        //console.log(result);
         result.forEach(function(image) {
             var avatar = image.avatar_url;
             var users = image.login;
