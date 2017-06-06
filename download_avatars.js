@@ -13,9 +13,9 @@ function getRepoContributors(repoOwner, repoName, cb) {
       headers: {"User-Agent": "pachopa"}
     };
     request(requestOptions, function(err, response, body) {
-    if (err) { throw err; }
-    cb(err, (JSON.parse(body)));
-  });
+        if (err) { throw err; }
+        cb(err, (JSON.parse(body)));
+    });
 }
 
 function downloadImageByURL(url, filePath) {
@@ -32,13 +32,18 @@ function downloadImageByURL(url, filePath) {
          .pipe(fs.createWriteStream('./avatars/' + filePath + ".jpg"))
 }
 
-getRepoContributors(repoOwner, repoName, function(err, result) {
-  //console.log("Errors:", err);
-  //console.log("Result:", result);
-  console.log(result);
-  result.forEach(function(image) {
-    var avatar = image.avatar_url;
-    var users = image.login;
-    downloadImageByURL(avatar, users)
-  });
-});
+if(!repoOwner || !repoName) {
+  console.log("Please, provide right repoOwner, reponame");
+  process.exit(1)
+} else {
+    getRepoContributors(repoOwner, repoName, function(err, result) {
+        //console.log("Errors:", err);
+        //console.log("Result:", result);   
+        //console.log(result);
+        result.forEach(function(image) {
+            var avatar = image.avatar_url;
+            var users = image.login;
+            downloadImageByURL(avatar, users)
+        });
+    });
+}
